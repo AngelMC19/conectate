@@ -1,0 +1,178 @@
+/* Asegurar que html, body y #root ocupen toda la pantalla */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Contenedor principal del chat para ocupar toda la ventana */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  width: 100vw; /* Ocupa todo el ancho de la ventana */
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Encabezado del chat */
+h2 {
+  text-align: center;
+  color: #333;
+  margin: 10px 0;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  background-color: #f8f8f8;
+}
+
+/* Lista de conversaciones */
+.conversations-list {
+  padding: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+  border-bottom: 1px solid #ddd;
+}
+
+.conversations-list h2 {
+  font-size: 1rem;
+  color: #007bff;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.conversations-list h2:hover {
+  text-decoration: underline;
+}
+
+/* Mensajes del chat */
+.messages-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+/* Estilo de cada mensaje */
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  max-width: 70%;
+  font-size: 0.9rem;
+}
+
+.message.sent {
+  background-color: #daf8e3;
+  align-self: flex-end;
+  color: #333;
+}
+
+.message.received {
+  background-color: #f0f0f0;
+  align-self: flex-start;
+  color: #333;
+}
+
+.message p {
+  margin: 0;
+}
+
+.message small {
+  display: block;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Formulario para enviar mensajes */
+form {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background-color: #ffffff;
+}
+
+form input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+form button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+/* Botón de cierre de sesión */
+button {
+  padding: 10px;
+  margin: 10px auto;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  display: block;
+  max-width: 150px;
+}
+
+button:hover {
+  background-color: #d9363e;
+}
+
+/* Contenedor de lista de conversaciones en fila */
+/* Contenedor de lista de conversaciones en fila con margen */
+.conversations-list {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto; /* Permite desplazamiento horizontal si hay muchas conversaciones */
+  padding: 10px;
+  gap: 10px; /* Espacio entre cada conversación */
+  border-bottom: 1px solid #ddd;
+  max-height: 100px;
+  background-color: #fafafa;
+  white-space: nowrap;
+  margin: 10px 20px; /* Margen alrededor del contenedor */
+}
+
+/* Estilo de cada conversación */
+.conversation-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #075e54;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 120px; /* Ancho mínimo para cada conversación */
+  transition: background-color 0.2s ease;
+  border: 1px solid #ddd;
+}
+
+/* Estilo de la conversación con nuevo mensaje */
+.conversation-item.new-message {
+  background-color: #d4f8e8;
+  color: #075e54;
+  font-weight: bold;
+}
+

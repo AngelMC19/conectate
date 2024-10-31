@@ -1,0 +1,54 @@
+/* Search.css */
+
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.search-container input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el menú desplegable */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10; /* Asegura que esté sobre otros elementos */
+  display: none; /* Se mostrará solo si hay resultados */
+}
+
+/* Mostrar el menú solo cuando hay resultados */
+.search-container.active .search-results {
+  display: block;
+}
+
+/* Estilo para cada elemento en los resultados de búsqueda */
+.search-results div {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.search-results div:last-child {
+  border-bottom: none;
+}
+
+.search-results div:hover {
+  background-color: #f0f0f0;
+}
