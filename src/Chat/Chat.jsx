@@ -20,21 +20,20 @@ const Chat = ({ user, onLogout }) => {
 
   const endOfMessagesRef = useRef(null); // Referencia para el último mensaje
 
-  // Función para obtener el nombre del usuario por UID
-  const fetchUserName = async (uid) => {
-    if (userNames[uid]) return userNames[uid];
-    
-    const userDoc = await getDoc(doc(db, "usuarios", uid));
-    if (userDoc.exists()) {
-      const name = userDoc.data().nombre;
-      setUserNames((prevState) => ({ ...prevState, [uid]: name }));
-      return name;
-    } else {
-      return "Desconocido";
-    }
-  };
-
   useEffect(() => {
+    const fetchUserName = async (uid) => {
+      if (userNames[uid]) return userNames[uid];
+      
+      const userDoc = await getDoc(doc(db, "usuarios", uid));
+      if (userDoc.exists()) {
+        const name = userDoc.data().nombre;
+        setUserNames((prevState) => ({ ...prevState, [uid]: name }));
+        return name;
+      } else {
+        return "Desconocido";
+      }
+    };
+  
     const unsubscribe = onSnapshot(doc(db, "usuarios", user.uid), (docSnap) => {
       if (docSnap.exists() && docSnap.data().conversaciones) {
         const conversationIds = docSnap.data().conversaciones;
@@ -44,7 +43,7 @@ const Chat = ({ user, onLogout }) => {
             const [user1, user2] = convId.split("_");
             const otherUserId = user1 === user.uid ? user2 : user1;
             const otherUserName = await fetchUserName(otherUserId);
-
+  
             onSnapshot(query(collection(db, `conversaciones/${convId}/mensajes`), orderBy("hora_envio", "asc")), (snapshot) => {
               if (snapshot.size > 0) {
                 const lastMessage = snapshot.docs[snapshot.size - 1].data();
@@ -53,18 +52,18 @@ const Chat = ({ user, onLogout }) => {
                 }
               }
             });
-
+  
             return { convId, otherUserId, otherUserName };
           }));
           setConversations(convData);
         };
-
+  
         fetchConversations();
       }
     });
-
+  
     return () => unsubscribe();
-  }, [user, conversationId, fetchUserName]);
+  }, [user, conversationId, userNames]);
 
   useEffect(() => {
     if (selectedUser) {
