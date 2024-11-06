@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { auth } from "../firebaseConfig"; // Importa Firebase Authentication
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"; // Agrega sendEmailVerification
-import { db } from "../firebaseConfig"; // Importa Firestore
-import { setDoc, doc } from "firebase/firestore"; // Para guardar los datos en Firestore
+import { auth } from "../firebaseConfig"; 
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"; 
+import { db } from "../firebaseConfig"; 
+import { setDoc, doc } from "firebase/firestore"; 
 import './SignUp.css';
 
 const SignUp = ({ onSwitchToLogin }) => {
@@ -85,7 +85,7 @@ const SignUp = ({ onSwitchToLogin }) => {
           />
         </div>
         <div>
-          <label>Confirm Password:</label>
+          <label>Confirmar Password:</label>
           <input
             type="password"
             value={confirmPassword}

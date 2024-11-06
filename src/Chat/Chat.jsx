@@ -1,7 +1,9 @@
+// Chat.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { collection, setDoc, doc, query, orderBy, onSnapshot, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import Search from "../Search/Search";
+import Profile from "../Profile/Profile"; // Importa el componente Profile
 import './Chat.css';
 import palabrasProhibidas from '../Data/palabras_traducidas.json';
 
@@ -14,6 +16,7 @@ const Chat = ({ user, onLogout }) => {
   const [conversations, setConversations] = useState([]);
   const [newMessages, setNewMessages] = useState({});
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensajes de error
+  const [showProfile, setShowProfile] = useState(false); // Estado para mostrar el perfil
 
   const endOfMessagesRef = useRef(null); // Referencia para el último mensaje
 
@@ -108,7 +111,6 @@ const Chat = ({ user, onLogout }) => {
     );
 
     if (palabraProhibida) {
-      const [ingles, espanol] = palabraProhibida;
       setErrorMessage(`El mensaje contiene una palabra prohibida y no puede ser enviado.`);
       return;
     }
@@ -143,56 +145,67 @@ const Chat = ({ user, onLogout }) => {
     }
   };
 
+  // Renderizado del perfil o chat
   return (
     <div className="chat-container">
-      <h2>Busca a tus amigos</h2>
-
-      {/* Barra de búsqueda de amigos */}
-      <Search user={user} onSelectUser={setSelectedUser} />
-
-      {/* Lista de conversaciones del usuario */}
-      <div className="conversations-list">
-        <h3>Tus conversaciones</h3>
-        {conversations.map((conv) => (
-          <div
-            key={conv.convId}
-            className={`conversation-item ${newMessages[conv.convId] ? "new-message" : ""}`}
-            onClick={() => handleSelectConversation(conv)}
-          >
-            <h2>{conv.otherUserName}</h2>
-          </div>
-        ))}
-      </div>
-
-      {/* Mensajes del chat */}
-      {selectedUser && (
+      {showProfile ? (
+        <Profile user={user} onBack={() => setShowProfile(false)} />
+      ) : (
         <>
-          <h3>Chat con {selectedUser.nombre}</h3>
-          <div className="messages-container">
-            {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.de === user.uid ? "sent" : "received"}`}>
-                <p><strong>{msg.nombre}</strong> {msg.contenido}</p>
-                <small>{new Date(msg.hora_envio).toLocaleTimeString()}</small>
+          <h2>Busca a tus amigos</h2>
+
+          <button onClick={() => setShowProfile(true)} className="profile-button">
+            Editar Perfil
+          </button>
+
+          {/* Barra de búsqueda de amigos */}
+          <Search user={user} onSelectUser={setSelectedUser} />
+
+          {/* Lista de conversaciones del usuario */}
+          <div className="conversations-list">
+            <h3>Tus conversaciones</h3>
+            {conversations.map((conv) => (
+              <div
+                key={conv.convId}
+                className={`conversation-item ${newMessages[conv.convId] ? "new-message" : ""}`}
+                onClick={() => handleSelectConversation(conv)}
+              >
+                <h2>{conv.otherUserName}</h2>
               </div>
             ))}
-            <div ref={endOfMessagesRef} /> {/* Referencia al último mensaje */}
           </div>
 
-          <form onSubmit={handleSendMessage}>
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Escribe un mensaje..."
-            />
-            <button type="submit">Enviar</button>
-          </form>
+          {/* Mensajes del chat */}
+          {selectedUser && (
+            <>
+              <h3>Chat con {selectedUser.nombre}</h3>
+              <div className="messages-container">
+                {messages.map((msg, index) => (
+                  <div key={index} className={`message ${msg.de === user.uid ? "sent" : "received"}`}>
+                    <p><strong>{msg.nombre}</strong> {msg.contenido}</p>
+                    <small>{new Date(msg.hora_envio).toLocaleTimeString()}</small>
+                  </div>
+                ))}
+                <div ref={endOfMessagesRef} /> {/* Referencia al último mensaje */}
+              </div>
 
-          {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Mostrar mensaje de error */}
+              <form onSubmit={handleSendMessage}>
+                <input
+                  type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Escribe un mensaje..."
+                />
+                <button type="submit">Enviar</button>
+              </form>
+
+              {errorMessage && <p className="error-message">{errorMessage}</p>}
+            </>
+          )}
+
+          <button onClick={onLogout}>Cerrar sesión</button>
         </>
       )}
-
-      <button onClick={onLogout}>Cerrar sesión</button>
     </div>
   );
 };
