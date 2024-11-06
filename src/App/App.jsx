@@ -48,7 +48,7 @@ function App() {
         <SignUp onSwitchToLogin={() => setCurrentView("login")} />
       )}
 
-      {currentView === "chat" && user && (
+      {currentView === "chat" && isVerified &&(
         <Chat user={user} onLogout={handleLogout} />
       )}
     </div>

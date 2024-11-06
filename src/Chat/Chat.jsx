@@ -64,7 +64,7 @@ const Chat = ({ user, onLogout }) => {
     });
 
     return () => unsubscribe();
-  }, [user, conversationId]);
+  }, [user, conversationId, fetchUserName]);
 
   useEffect(() => {
     if (selectedUser) {
