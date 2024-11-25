@@ -11,7 +11,6 @@ const SignUp = ({ onSwitchToLogin }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState(""); // Campo para el nombre
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,6 +19,11 @@ const SignUp = ({ onSwitchToLogin }) => {
     // Verifica si las contraseñas coinciden
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    if (password.length <8) {
+      setError("La contraseña debe tener minimo 8 caracteres");
       return;
     }
 
@@ -39,7 +43,7 @@ const SignUp = ({ onSwitchToLogin }) => {
       await sendEmailVerification(user);
 
       // Mensaje de éxito
-      setMessage("Usuario registrado con éxito. Por favor, verifica tu correo.");
+      alert("Por favor, verifica tu correo.");
 
       // Opción: Redirigir al login después de un tiempo o esperar confirmación manual
       setTimeout(() => {
@@ -55,7 +59,6 @@ const SignUp = ({ onSwitchToLogin }) => {
     <div className="signup-container">
       <h2>Sign Up</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      {message && <p style={{ color: "green" }}>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Nombre:</label>
