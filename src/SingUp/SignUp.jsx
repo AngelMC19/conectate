@@ -3,6 +3,7 @@ import { auth } from "../firebaseConfig";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"; 
 import { db } from "../firebaseConfig"; 
 import { setDoc, doc } from "firebase/firestore"; 
+import Swal from "sweetalert2"; // Importar SweetAlert2
 import './SignUp.css';
 
 const SignUp = ({ onSwitchToLogin }) => {
@@ -22,8 +23,8 @@ const SignUp = ({ onSwitchToLogin }) => {
       return;
     }
 
-    if (password.length <8) {
-      setError("La contraseña debe tener minimo 8 caracteres");
+    if (password.length < 8) {
+      setError("La contraseña debe tener mínimo 8 caracteres");
       return;
     }
 
@@ -42,16 +43,27 @@ const SignUp = ({ onSwitchToLogin }) => {
       // Envía el correo de verificación
       await sendEmailVerification(user);
 
-      // Mensaje de éxito
-      alert("Por favor, verifica tu correo.");
+      // Mostrar mensaje de éxito con SweetAlert2
+      Swal.fire({
+        title: "Registro Exitoso",
+        text: "Por favor, verifica tu correo electrónico.",
+        icon: "success",
+        confirmButtonText: "Aceptar"
+      });
 
-      // Opción: Redirigir al login después de un tiempo o esperar confirmación manual
+      // Opción: Redirigir al login después de un tiempo
       setTimeout(() => {
         onSwitchToLogin(); // Redirigir a la página de inicio de sesión
-      }, 3000); // Redirige después de 3 segundos
+      }, 3000);
 
     } catch (error) {
-      setError("Error al registrar el usuario: " + error.message);
+      // Mostrar error con SweetAlert2
+      Swal.fire({
+        title: "Error",
+        text: "Error al registrar el usuario: " + error.message,
+        icon: "error",
+        confirmButtonText: "Cerrar"
+      });
     }
   };
 
